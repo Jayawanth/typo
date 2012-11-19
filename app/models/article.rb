@@ -416,6 +416,24 @@ class Article < Content
     user.admin? || user_id == user.id
   end
 
+  def merge_with(merge_with_id)
+    other_article = Article.find_by_id(merge_with_id);
+    return if other_article == nil
+
+    # retain title, author in current article
+
+    # append text from other article
+    self.body << (other_article.body || "")
+    self.extended << (other_article.extended || "")
+
+    # append array of comments from other article
+    self.published_comments << other_article.published_comments
+
+    self.save
+    # self.reload     # necessary to hold on to appended comments?
+    other_article.delete  # now safe to delete without affecting the copied comments
+  end
+
   protected
 
   def set_published_at
@@ -466,4 +484,5 @@ class Article < Content
     to = to - 1 # pull off 1 second so we don't overlap onto the next day
     return from..to
   end
+
 end
