@@ -36,8 +36,8 @@ Given /^the blog is set up$/ do
                                    :base_url => 'http://localhost:3000'});
   Blog.default.save!
   User.create!({:login => 'admin',
-                :password => 'admin',
-                :email => 'admin@snow.com',
+                :password => 'aaaaaaaa',
+                :email => 'joe@snow.com',
                 :profile_id => 1,
                 :name => 'admin',
                 :state => 'active'})
@@ -53,7 +53,7 @@ end
 And /^I am logged into the admin panel$/ do
   visit '/accounts/login'
   fill_in 'user_login', :with => 'admin'
-  fill_in 'user_password', :with => 'admin'
+  fill_in 'user_password', :with => 'aaaaaaaa'
   click_button 'Login'
   if page.respond_to? :should
     page.should have_content('Login successful')
