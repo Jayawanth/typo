@@ -423,15 +423,15 @@ class Article < Content
     # retain title, author in current article
 
     # append text from other article
-    self.body << (other_article.body || "")
-    self.extended << (other_article.extended || "")
-
+    body = (self.body || "") + (other_article.body || "")
+    extended = (self.extended || "") + (other_article.extended || "")
     # append array of comments from other article
-    self.published_comments << other_article.published_comments
+    published_comments = self.published_comments + other_article.published_comments
 
-    self.save
-    # self.reload     # necessary to hold on to appended comments?
+    result = self.update_attributes(body: body, extended: extended, published_comments: published_comments)
+    return if result == false
     other_article.delete  # now safe to delete without affecting the copied comments
+    result
   end
 
   protected
