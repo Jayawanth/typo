@@ -92,13 +92,23 @@ When /^I visit article with title "([^"]*)"$/ do |title|
   visit current_path
 end
 
-Then /^I should see "([^"]*)" and "([^"]*)" in merged article$/ do |text1, text2|
+Then /^I should see texts "([^"]*)" and "([^"]*)" in merged article$/ do |text1, text2|
   if page.respond_to? :should
     page.should have_content(text1)
     page.should have_content(text2)
   else
     assert page.has_content?(text1)
     assert page.has_content?(text2)
+  end
+end
+
+Then /^I should see comments "([^"]*)" and "([^"]*)" in merged article$/ do |comment1, comment2|
+  if page.respond_to? :should
+    page.should have_content(comment1)
+    page.should have_content(comment2)
+  else
+    assert page.has_content?(comment1)
+    assert page.has_content?(comment2)
   end
 end
 
