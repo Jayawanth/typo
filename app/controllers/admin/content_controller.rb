@@ -62,6 +62,7 @@ class Admin::ContentController < Admin::BaseController
       flash[:error] = _("Error, Failed merge of article ID:#{article_id} with ID: #{other_article_id}")
       return
     end
+    @merge_allowed = current_user.admin?
     new_or_edit
   end
 
