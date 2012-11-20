@@ -74,6 +74,34 @@ And /^I am logged into the publisher panel$/ do
   end
 end
 
+When /^I edit article with title "([^"]*)"$/ do |title|
+  article = Article.find_by_title(title)
+  visit "/admin/content/edit/#{article.id}"
+end
+
+And /^I merge in article with title "([^"]*)"$/ do |title|
+  article = Article.find_by_title(title)
+  body = article.body
+  fill_in(:merge_with, :with => article.id)
+  click_button "Merge"
+end
+
+When /^I visit article with title "([^"]*)"$/ do |title|
+  article = Article.find_by_title(title)
+  current_path = URI.parse(article.permalink_url).path
+  visit current_path
+end
+
+Then /^I should see "([^"]*)" and "([^"]*)" in merged article$/ do |text1, text2|
+  if page.respond_to? :should
+    page.should have_content(text1)
+    page.should have_content(text2)
+  else
+    assert page.has_content?(text1)
+    assert page.has_content?(text2)
+  end
+end
+
 # Single-line step scoper
 When /^(.*) within (.*[^:])$/ do |step, parent|
   with_scope(parent) { When step }
