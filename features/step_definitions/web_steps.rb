@@ -112,6 +112,10 @@ Then /^I should see comments "([^"]*)" and "([^"]*)" in merged article$/ do |com
   end
 end
 
+Then /^I should see field "([^"]*)" with value "([^"]*)"$/ do |field, value|
+  assert page.has_field?(field, :with => value)
+end
+
 # Single-line step scoper
 When /^(.*) within (.*[^:])$/ do |step, parent|
   with_scope(parent) { When step }
@@ -328,6 +332,10 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   else
     assert_equal expected_params, actual_params
   end
+end
+
+Then /^I should see link to "([^"]*)"$/ do |link|
+  page.should have_link link
 end
 
 Then /^show me the page$/ do
